@@ -9,6 +9,7 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [reagent "0.5.0-alpha3"]
                  [com.taoensso/sente "1.4.1"]
+                 [http-kit "2.1.18"]
                  [ring "1.3.1"]
                  [ring/ring-json "0.3.1"]
                  [ring/ring-defaults "0.1.4"]
