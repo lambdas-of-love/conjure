@@ -26,6 +26,8 @@
   (POST "/chsk" req (ring-ajax-post                req))
   (route/not-found "Not Found"))
 
+(defn event-msg-handler [ev-msg] (println "We got a message."))
+
 (def app
   (-> app-routes
       wrap-json-body
@@ -35,6 +37,12 @@
       ring.middleware.params/wrap-params
       (wrap-reload '(conjure.handler))))
 
-(defn start-server [] (run-server (var app) {:port 8080 :join? false}))
+(defn start-server []
+  ;; The following feels gross, this is so we can rebind event-msg-handler
+  ;; and not have to start/stop the router again.
+  (let [handler (fn [ev-msg] (event-msg-handler ev-msg))]
+    (sente/start-chsk-router! ch-chsk handler))
+  ;; Start the webserver.
+  (run-server (var app) {:port 8080 :join? false}))
 
 (defn -main [& args] (start-server))
